@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+Difference Array Trick
+----------------------
+We have an array of size n and q operations.
+Each operation: add value x to all elements in range [l, r].
+After all operations, print the final array.
+
+Approach:
+- Build a difference array d[].
+- For each update (l, r, x):
+    d[l] += x
+    d[r+1] -= x   (if r+1 <= n)
+- Finally, compute prefix sums to reconstruct the updated array.
+*/
+
+const int N = 200000 + 5;
+long long d[N], a[N];
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, q;
+    cin >> n >> q;
+
+    // input original array
+    for (int i = 1; i <= n; i++) {
+        cin >> a[i];
+        d[i] = a[i] - a[i - 1];  // build difference array
+    }
+
+    // process queries
+    while (q--) {
+        int l, r;
+        long long x;
+        cin >> l >> r >> x;
+        d[l] += x;
+        if (r + 1 <= n) d[r + 1] -= x;
+    }
+
+    // rebuild final array using prefix sums
+    for (int i = 1; i <= n; i++) {
+        a[i] = a[i - 1] + d[i];
+    }
+
+    // output final array
+    for (int i = 1; i <= n; i++) {
+        cout << a[i] << " ";
+    }
+    cout << "\n";
+
+    return 0;
+}
