@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+GCD and LCM of an Array
+-----------------------
+- Handles negative numbers by making them positive first.
+- Uses pairwise reduction:
+    gcd(a1, a2, ..., an) = gcd(...gcd(gcd(a1, a2), a3)..., an)
+    lcm(a1, a2, ..., an) = lcm(...lcm(lcm(a1, a2), a3)..., an)
+*/
+
+// GCD of two numbers
+long long gcd(long long a, long long b) {
+    if (a < 0) a = -a;
+    if (b < 0) b = -b;
+    while (b != 0) {
+        long long temp = a % b;
+        a = b;
+        b = temp;
+    }
+    return a;
+}
+
+// LCM of two numbers
+long long lcm(long long a, long long b) {
+    if (a == 0 || b == 0) return 0;
+    return (a / gcd(a, b)) * b;  // safe from overflow
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    cin >> n;  // size of array
+    vector<long long> arr(n);
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    // Compute GCD of the whole array
+    long long array_gcd = arr[0];
+    for (int i = 1; i < n; i++) {
+        array_gcd = gcd(array_gcd, arr[i]);
+    }
+
+    // Compute LCM of the whole array
+    long long array_lcm = arr[0];
+    for (int i = 1; i < n; i++) {
+        array_lcm = lcm(array_lcm, arr[i]);
+    }
+
+    cout << "GCD of array = " << array_gcd << '\n';
+    cout << "LCM of array = " << array_lcm << '\n';
+
+    return 0;
+}
