@@ -1,0 +1,58 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+Problem: Number of Subarrays with Sum <= S
+------------------------------------------
+You are given an array of n positive integers and a number s.
+Find the number of subarrays such that their sum is <= s.
+
+Constraints:
+1 ≤ n ≤ 1e5
+1 ≤ a[i] ≤ 1e9
+1 ≤ s ≤ 1e14
+
+Approach (Two Pointers / Sliding Window):
+- Maintain a window [l, r-1] whose sum is <= s.
+- Expand r as far as possible while keeping the sum <= s.
+- For each fixed l, the number of valid subarrays starting at l is (r - l).
+- Then shrink the window by moving l forward.
+- Complexity: O(n).
+*/
+
+const int N = 100000 + 5;
+int a[N];
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    long long s;
+    cin >> n >> s;
+
+    for (int i = 1; i <= n; i++) {
+        cin >> a[i];
+    }
+
+    long long ans = 0;
+    int r = 1;       // right pointer
+    long long sum = 0;
+
+    for (int l = 1; l <= n; l++) {
+        // Expand right pointer while sum + a[r] <= s
+        while (r <= n && sum + a[r] <= s) {
+            sum += a[r];
+            r++;
+        }
+
+        // Now [l, r-1] is the largest valid window starting at l
+        ans += (r - l);
+
+        // Move left pointer forward (remove a[l] from sum)
+        sum -= a[l];
+    }
+
+    cout << ans << '\n';
+    return 0;
+}
