@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+Problem: Range Sum Queries I (CSES)
+-----------------------------------
+You are given an array of n integers and q queries.
+Each query asks for the sum of elements between indices l and r (inclusive).
+
+Constraints:
+1 ≤ n, q ≤ 2*10^5
+1 ≤ array elements ≤ 10^9
+
+Approach:
+- Precompute prefix sums: pref_sum[i] = a[1] + a[2] + ... + a[i]
+- Answer each query in O(1) using:
+    sum(l, r) = pref_sum[r] - pref_sum[l - 1]
+*/
+
+const int N = 200000 + 5;   // maximum array size
+long long pref_sum[N];      // prefix sum array
+int a[N];                   // input array
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, q;
+    cin >> n >> q;          // input size and number of queries
+
+    for (int i = 1; i <= n; i++) {
+        cin >> a[i];
+    }
+
+    // Build prefix sums
+    for (int i = 1; i <= n; i++) {
+        pref_sum[i] = pref_sum[i - 1] + a[i];
+    }
+
+    // Answer queries
+    while (q--) {
+        int l, r;
+        cin >> l >> r;
+        cout << pref_sum[r] - pref_sum[l - 1] << '\n';
+    }
+
+    return 0;
+}
