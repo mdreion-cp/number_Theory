@@ -1,0 +1,55 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+Problem: K-th Divisor
+---------------------
+You are given two integers n and k.
+Find the k-th smallest positive divisor of n.
+If n has fewer than k divisors, output -1.
+
+Example:
+Input:
+12 4
+Output:
+6
+Explanation: Divisors of 12 are [1, 2, 3, 4, 6, 12].
+The 4th smallest divisor is 6.
+*/
+
+// Function to get all divisors of n
+vector<long long> get_divisors(long long n) {
+    vector<long long> divs;
+    // Iterate up to sqrt(n) to find divisors
+    for (long long i = 1; i * i <= n; i++) {
+        if (n % i == 0) {
+            divs.push_back(i);          // i is a divisor
+            if (i != n / i) {
+                divs.push_back(n / i); // n/i is also a divisor (avoid duplicates)
+            }
+        }
+    }
+    sort(divs.begin(), divs.end()); // Sort divisors in ascending order
+    return divs;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    long long n, k;
+    cin >> n >> k; // Input values
+
+    // Get all divisors of n
+    vector<long long> divs = get_divisors(n);
+
+    // If k is larger than number of divisors, print -1
+    if (k > (long long)divs.size()) {
+        cout << -1 << '\n';
+    } else {
+        // Otherwise, print the k-th smallest divisor
+        cout << divs[k - 1] << '\n';
+    }
+
+    return 0;
+}
